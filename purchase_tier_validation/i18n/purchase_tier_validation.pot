@@ -92,6 +92,11 @@ msgid "Tier Definition"
 msgstr ""
 
 #. module: purchase_tier_validation
+#: model:ir.model.fields,field_description:purchase_tier_validation.field_purchase_order__tier_validation_before_write
+msgid "Tier Validation Before Write"
+msgstr ""
+
+#. module: purchase_tier_validation
 #: model:ir.model.fields,field_description:purchase_tier_validation.field_purchase_order__to_validate_message
 msgid "To Validate Message"
 msgstr ""
@@ -105,6 +110,11 @@ msgstr ""
 #. module: purchase_tier_validation
 #: model:ir.model.fields,field_description:purchase_tier_validation.field_purchase_order__validated_message
 msgid "Validated Message"
+msgstr ""
+
+#. module: purchase_tier_validation
+#: model:ir.model.fields,field_description:purchase_tier_validation.field_purchase_order__validation_status
+msgid "Validation Status"
 msgstr ""
 
 #. module: purchase_tier_validation

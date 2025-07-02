@@ -169,41 +169,69 @@ class TestDeliverySingle(TransactionCase):
     def test_purchase_line_qty_change_merge_moves(self):
         self.po.order_line[0].date_planned = self.date_later
         self.po.button_confirm()
+<<<<<<< HEAD
         self.assertEquals(
+=======
+        self.assertEqual(
+>>>>>>> oca/14.0
             len(self.po.picking_ids),
             2,
             "There must be 2 pickings when PO lines have 2 different dates",
         )
         # Increase qty of first PO line
         self.po.order_line[0].product_qty += 10
+<<<<<<< HEAD
         self.assertEquals(
+=======
+        self.assertEqual(
+>>>>>>> oca/14.0
             len(self.po.picking_ids),
             2,
             "There must be 2 pickings when PO lines have 2 different dates",
         )
+<<<<<<< HEAD
         self.assertEquals(
+=======
+        self.assertEqual(
+>>>>>>> oca/14.0
             len(self.po.order_line[0].move_ids),
             1,
             "There must be 1 move per PO line when qty is increased",
         )
+<<<<<<< HEAD
         self.assertEquals(
+=======
+        self.assertEqual(
+>>>>>>> oca/14.0
             len(self.po.order_line[1].move_ids),
             1,
             "There must be 1 move per PO line when qty is increased",
         )
         # Increase qty of second PO line
         self.po.order_line[1].product_qty += 10
+<<<<<<< HEAD
         self.assertEquals(
+=======
+        self.assertEqual(
+>>>>>>> oca/14.0
             len(self.po.picking_ids),
             2,
             "There must be 2 pickings when PO lines have 2 different dates",
         )
+<<<<<<< HEAD
         self.assertEquals(
+=======
+        self.assertEqual(
+>>>>>>> oca/14.0
             len(self.po.order_line[0].move_ids),
             1,
             "There must be 1 move per PO line when qty is increased",
         )
+<<<<<<< HEAD
         self.assertEquals(
+=======
+        self.assertEqual(
+>>>>>>> oca/14.0
             len(self.po.order_line[1].move_ids),
             1,
             "There must be 1 move per PO line when qty is increased",
@@ -249,23 +277,33 @@ class TestDeliverySingle(TransactionCase):
         line1 = self.po.order_line[0]
         line2 = self.po.order_line[1]
         self.env.user.tz = "Europe/Brussels"
-        self.assertEquals(len(self.po.picking_ids), 1)
+        self.assertEqual(len(self.po.picking_ids), 1)
         line1.write({"date_planned": "2021-05-05 03:00:00"})
-        self.assertEquals(len(self.po.picking_ids), 2)
+        self.assertEqual(len(self.po.picking_ids), 2)
         # Time difference of at least +1 so  should be same day (1 picking)
         line2.write({"date_planned": "2021-05-04 23:00:00"})
-        self.assertEquals(len(self.po.picking_ids), 1)
+        self.assertEqual(len(self.po.picking_ids), 1)
 
         self.env.user.tz = "Etc/UTC"
         line1.write({"date_planned": "2021-05-05 03:00:00"})
-        self.assertEquals(len(self.po.picking_ids), 2)
+        self.assertEqual(len(self.po.picking_ids), 2)
         # No time difference so will be another day (2 pickings)
         line2.write({"date_planned": "2021-05-04 23:00:00"})
+<<<<<<< HEAD
         self.assertEquals(len(self.po.picking_ids), 2)
+=======
+        self.assertEqual(len(self.po.picking_ids), 2)
+>>>>>>> oca/14.0
 
     def test_set_planned_date_in_the_past(self):
         """Check changing the scheduled date of one line in the past."""
         self.po.button_confirm()
+<<<<<<< HEAD
         self.assertEquals(len(self.po.picking_ids), 1)
         self.po.order_line[0].date_planned = self.date_in_the_past
         self.assertEquals(len(self.po.picking_ids), 2)
+=======
+        self.assertEqual(len(self.po.picking_ids), 1)
+        self.po.order_line[0].date_planned = self.date_in_the_past
+        self.assertEqual(len(self.po.picking_ids), 2)
+>>>>>>> oca/14.0

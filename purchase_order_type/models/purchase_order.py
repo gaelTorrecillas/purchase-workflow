@@ -42,7 +42,9 @@ class PurchaseOrder(models.Model):
         if vals.get("name", "/") == "/" and vals.get("order_type"):
             purchase_type = self.env["purchase.order.type"].browse(vals["order_type"])
             if purchase_type.sequence_id:
-                vals["name"] = purchase_type.sequence_id.next_by_id()
+                vals["name"] = purchase_type.sequence_id.next_by_id(
+                    sequence_date=vals.get("date_order")
+                )
         return super().create(vals)
 
     @api.constrains("company_id")
@@ -62,4 +64,8 @@ class PurchaseOrder(models.Model):
 
     @api.onchange("company_id")
     def _onchange_company(self):
-        self.order_type = self._default_order_type()
+        if not self.order_type or (
+            self.order_type
+            and self.order_type.company_id not in [self.company_id, False]
+        ):
+            self.order_type = self._default_order_type()

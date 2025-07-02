@@ -1,6 +1,7 @@
 # Copyright 2018-2020 ForgeFlow, S.L.
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0)
 
+
 from odoo import api, fields, models
 
 
@@ -12,6 +13,7 @@ class StockRule(models.Model):
         procurement_uom_po_qty = procurement.product_uom._compute_quantity(
             procurement.product_qty, procurement.product_id.uom_po_id
         )
+        move_dest_ids = self._get_move_dest_id_from_procurement(procurement)
         return {
             "product_id": procurement.product_id.id,
             "name": procurement.product_id.name,
@@ -21,9 +23,7 @@ class StockRule(models.Model):
             "product_uom_id": procurement.product_id.uom_po_id.id,
             "product_qty": procurement_uom_po_qty,
             "request_id": request_id.id,
-            "move_dest_ids": [
-                (4, x.id) for x in procurement.values.get("move_dest_ids", [])
-            ],
+            "move_dest_ids": [(4, id_) for id_ in move_dest_ids],
             "orderpoint_id": procurement.values.get("orderpoint_id", False)
             and procurement.values.get("orderpoint_id").id,
         }
@@ -51,19 +51,18 @@ class StockRule(models.Model):
         extended.
         :return: False
         """
-        domain = (
-            ("state", "=", "draft"),
-            ("picking_type_id", "=", self.picking_type_id.id),
-            ("company_id", "=", values["company_id"].id),
-        )
         gpo = self.group_propagation_option
         group_id = (
             (gpo == "fixed" and self.group_id.id)
             or (gpo == "propagate" and values["group_id"].id)
             or False
         )
-        if group_id:
-            domain += (("group_id", "=", group_id),)
+        domain = (
+            ("state", "in", ("draft", "to_approve", "approved")),
+            ("picking_type_id", "=", self.picking_type_id.id),
+            ("company_id", "=", values["company_id"].id),
+            ("group_id", "=", group_id),
+        )
         return domain
 
     def is_create_purchase_request_allowed(self, procurement):
@@ -91,6 +90,12 @@ class StockRule(models.Model):
             return
         return super(StockRule, self)._run_buy(procurements)
 
+    def _get_move_dest_id_from_procurement(self, procurement):
+        moves = procurement.values.get("move_dest_ids")
+        if moves:
+            return [m.id for m in moves]
+        return []
+
     def create_purchase_request(self, procurement_group):
         """
         Create a purchase request containing procurement order product.
@@ -105,7 +110,14 @@ class StockRule(models.Model):
         if domain in cache:
             pr = cache[domain]
         elif domain:
-            pr = self.env["purchase.request"].search([dom for dom in domain])
+            pr = (
+                self.env["purchase.request"]
+                .search([dom for dom in domain])
+                .filtered(
+                    lambda x: procurement.product_id in x.line_ids.mapped("product_id")
+                    and x.purchase_count == 0
+                )
+            )
             pr = pr[0] if pr else False
             cache[domain] = pr
         if not pr:
@@ -124,4 +136,33 @@ class StockRule(models.Model):
                 pr.write({"origin": procurement.origin})
         # Create Line
         request_line_data = rule._prepare_purchase_request_line(pr, procurement)
-        purchase_request_line_model.create(request_line_data)
+        # check if request has lines for same product and data
+        # if yes, update qty instead of creating new line
+        matching_lines = pr.line_ids.filtered_domain(
+            [
+                ("product_id", "=", request_line_data["product_id"]),
+                ("date_required", "=", request_line_data["date_required"].date()),
+                (
+                    "purchase_state",
+                    "=",
+                    False,
+                ),  # avoid updating if there is RFQ or PO linked
+            ],
+        )
+        if matching_lines:
+            # Increment quantity on the existing move, and add the new dest
+            # move to move_dest_ids
+            dest_move_ids = self._get_move_dest_id_from_procurement(procurement)
+            matching_line = fields.first(matching_lines)
+            new_product_qty = (
+                matching_line.product_qty + request_line_data["product_qty"]
+            )
+            matching_line.write(
+                {
+                    "product_qty": new_product_qty,
+                    "move_dest_ids": [(4, id_) for id_ in dest_move_ids],
+                }
+            )
+        else:
+            # Create Line
+            purchase_request_line_model.create(request_line_data)

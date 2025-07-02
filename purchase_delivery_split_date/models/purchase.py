@@ -111,7 +111,11 @@ class PurchaseOrderLine(models.Model):
         return res
 
     def _update_move_date_deadline(self, new_date):
+<<<<<<< HEAD
         """ Also propagate new date to the moves. """
+=======
+        """Also propagate new date to the moves."""
+>>>>>>> oca/14.0
         super()._update_move_date_deadline(new_date)
         moves_to_update = self.move_ids.filtered(
             lambda m: m.state not in ("done", "cancel")

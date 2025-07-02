@@ -9,3 +9,9 @@
 * `Via laurea <https://www.vialaurea.com>`__:
 
   * Darius Žižys
+
+* `Ooops404 <https://www.ooops404.com>`__:
+
+  * Giovanni Serra <giovanni@ooops404.com>
+
+* PyTech SRL <info@pytech.it>

@@ -45,9 +45,16 @@ msgid "Product Template"
 msgstr ""
 
 #. module: product_form_purchase_link
-#: model:ir.model.fields,field_description:product_form_purchase_link.field_product_product__purchase_lines_count
-msgid "Purchased"
+#: model_terms:ir.ui.view,arch_db:product_form_purchase_link.purchase_order_line_search
+msgid "Purchase Orders"
 msgstr ""
+
+#. module: product_form_purchase_link
+#: model:ir.model.fields,field_description:product_form_purchase_link.field_product_product__purchase_lines_count
+#: model:ir.model.fields,field_description:product_form_purchase_link.field_product_template__purchase_lines_count
+#, fuzzy
+msgid "Purchased products"
+msgstr "Produits achetés"
 
 #. module: product_form_purchase_link
 #: model:ir.actions.act_window,name:product_form_purchase_link.action_purchase_line_product_product_tree
@@ -58,6 +65,6 @@ msgid "Purchases"
 msgstr "Achats"
 
 #. module: product_form_purchase_link
-#: model:ir.model.fields,field_description:product_form_purchase_link.field_product_template__purchase_lines_count
-msgid "Sold"
+#: model_terms:ir.ui.view,arch_db:product_form_purchase_link.purchase_order_line_search
+msgid "RFQs"
 msgstr ""

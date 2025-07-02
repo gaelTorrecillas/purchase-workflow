@@ -3,7 +3,7 @@
 
 {
     "name": "Purchase Work Acceptance Invoice Plan",
-    "version": "14.0.1.0.1",
+    "version": "14.0.1.1.0",
     "category": "Purchase Management",
     "author": "Ecosoft, Odoo Community Association (OCA)",
     "license": "AGPL-3",
@@ -11,6 +11,7 @@
     "depends": ["purchase_work_acceptance", "purchase_invoice_plan"],
     "data": [
         "security/ir.model.access.csv",
+        "data/server_action.xml",
         "wizard/select_work_acceptance_invoice_plan_wizard_views.xml",
         "views/purchase_views.xml",
         "views/work_acceptance_view.xml",

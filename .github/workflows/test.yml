@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Detect unreleased dependencies
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: |
           for reqfile in requirements.txt test-requirements.txt ; do
               if [ -f ${reqfile} ] ; then
@@ -28,7 +28,7 @@ jobs:
               fi
           done
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     container: ${{ matrix.container }}
     name: ${{ matrix.name }}
     strategy:
@@ -37,39 +37,39 @@ jobs:
         include:
           - container: ghcr.io/oca/oca-ci/py3.6-odoo14.0:latest
             include: "purchase_cancel_reason"
-            makepot: "true"
             name: test with Odoo
           - container: ghcr.io/oca/oca-ci/py3.6-ocb14.0:latest
             include: "purchase_cancel_reason"
             name: test with OCB
+            makepot: "true"
           - container: ghcr.io/oca/oca-ci/py3.6-odoo14.0:latest
             include: "purchase_cancel_confirm"
-            makepot: "true"
             name: test with Odoo
           - container: ghcr.io/oca/oca-ci/py3.6-ocb14.0:latest
             include: "purchase_cancel_confirm"
             name: test with OCB
-          - container: ghcr.io/oca/oca-ci/py3.6-odoo14.0:latest
-            include: "purchase_order_type"
             makepot: "true"
+          - container: ghcr.io/oca/oca-ci/py3.6-odoo14.0:latest
+            include: "purchase_order_type,purchase_order_type_dashboard"
             name: test with Odoo
           - container: ghcr.io/oca/oca-ci/py3.6-ocb14.0:latest
-            include: "purchase_order_type"
+            include: "purchase_order_type,purchase_order_type_dashboard"
             name: test with OCB
+            makepot: "true"
           - container: ghcr.io/oca/oca-ci/py3.6-odoo14.0:latest
             include: "purchase_quick"
-            makepot: "true"
             name: test with Odoo
           - container: ghcr.io/oca/oca-ci/py3.6-ocb14.0:latest
             include: "purchase_quick"
             name: test with OCB
-          - container: ghcr.io/oca/oca-ci/py3.6-odoo14.0:latest
-            exclude: "purchase_cancel_reason,purchase_cancel_confirm,purchase_order_type,purchase_quick"
             makepot: "true"
+          - container: ghcr.io/oca/oca-ci/py3.6-odoo14.0:latest
+            exclude: "purchase_cancel_reason,purchase_cancel_confirm,purchase_order_type,purchase_order_type_dashboard,purchase_quick"
             name: test with Odoo
           - container: ghcr.io/oca/oca-ci/py3.6-ocb14.0:latest
-            exclude: "purchase_cancel_reason,purchase_cancel_confirm,purchase_order_type,purchase_quick"
+            exclude: "purchase_cancel_reason,purchase_cancel_confirm,purchase_order_type,purchase_order_type_dashboard,purchase_quick"
             name: test with OCB
+            makepot: "true"
     services:
       postgres:
         image: postgres:9.6
@@ -83,7 +83,7 @@ jobs:
       INCLUDE: "${{ matrix.include }}"
       EXCLUDE: "${{ matrix.exclude }}"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - name: Install addons and dependencies
@@ -96,7 +96,9 @@ jobs:
         run: oca_init_test_database
       - name: Run tests
         run: oca_run_tests
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Update .pot files
         run: oca_export_and_push_pot https://x-access-token:${{ secrets.GIT_PUSH_TOKEN }}@github.com/${{ github.repository }}
         if: ${{ matrix.makepot == 'true' && github.event_name == 'push' && github.repository_owner == 'OCA' }}

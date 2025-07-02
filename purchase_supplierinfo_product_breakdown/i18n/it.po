@@ -6,15 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-17 10:44+0000\n"
-"Last-Translator: Francesco Foresti <francesco.foresti@ooops404.com>\n"
+"PO-Revision-Date: 2023-10-29 17:39+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: purchase_supplierinfo_product_breakdown
 #: model_terms:ir.ui.view,arch_db:purchase_supplierinfo_product_breakdown.product_supplierinfo_component_form_view
@@ -60,8 +60,9 @@ msgid ""
 "Conversion between Units of Measure can only occur if they belong to the "
 "same category. The conversion will be made based on the ratios."
 msgstr ""
-"La conversione tra Unità di misura può avvenire solo se appartengono alla "
-"stessa categoria. La conversione verrà fatta basata sul rapporto."
+"Le conversioni tra unità di misura possono avvenire solo se appartengono "
+"alla stessa categoria. La conversione verrà effettuata in base alle "
+"proporzioni."
 
 #. module: purchase_supplierinfo_product_breakdown
 #: model:ir.model.fields,field_description:purchase_supplierinfo_product_breakdown.field_product_supplierinfo_component__create_uid
@@ -79,7 +80,7 @@ msgstr "Creato il"
 #: model:ir.model.fields,field_description:purchase_supplierinfo_product_breakdown.field_product_template__display_name
 #: model:ir.model.fields,field_description:purchase_supplierinfo_product_breakdown.field_res_partner__display_name
 msgid "Display Name"
-msgstr "Nome da visualizzare"
+msgstr "Nome visualizzato"
 
 #. module: purchase_supplierinfo_product_breakdown
 #: model:product.product,name:purchase_supplierinfo_product_breakdown.product_product_test_demo_drill
@@ -140,7 +141,7 @@ msgstr "Prodotti"
 #. module: purchase_supplierinfo_product_breakdown
 #: model:ir.model.fields,field_description:purchase_supplierinfo_product_breakdown.field_product_supplierinfo_component__product_uom_qty
 msgid "Qty per Unit"
-msgstr "Qtà per Unità"
+msgstr "Q.tà per unità"
 
 #. module: purchase_supplierinfo_product_breakdown
 #: model_terms:ir.ui.view,arch_db:purchase_supplierinfo_product_breakdown.product_supplierinfo_component_form_view
@@ -161,7 +162,7 @@ msgstr "Listino fornitore"
 #. module: purchase_supplierinfo_product_breakdown
 #: model:ir.model,name:purchase_supplierinfo_product_breakdown.model_product_supplierinfo
 msgid "Supplier Pricelist"
-msgstr "Listino Fornitore"
+msgstr "Listino prezzi fornitore"
 
 #. module: purchase_supplierinfo_product_breakdown
 #: model:ir.model,name:purchase_supplierinfo_product_breakdown.model_product_supplierinfo_component
@@ -177,7 +178,7 @@ msgstr "Cassetta degli attrezzi"
 #. module: purchase_supplierinfo_product_breakdown
 #: model:ir.model.fields,field_description:purchase_supplierinfo_product_breakdown.field_product_supplierinfo_component__product_uom_id
 msgid "Unit of Measure"
-msgstr "Unità di Misura"
+msgstr "Unità di misura"
 
 #. module: purchase_supplierinfo_product_breakdown
 #: model:product.product,uom_name:purchase_supplierinfo_product_breakdown.product_product_test_demo_drill
